@@ -92,7 +92,18 @@ function App() {
   return (
     <>
       {/* Toolbar */}
-      <div style={{ position: "fixed", top: 10, left: 10, zIndex: 1 }}>
+      <div style={{ 
+        position: "fixed",
+        top: 10,
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 1,
+        backgroundColor: "#fff", 
+        padding: "8px",
+        borderRadius: "8px",
+        boxShadow: "0 0 5px rgba(0,0,0,0.2)" 
+        }}
+      >
         <input type="color" onChange={handleColorChange} value={color} />
         <button onClick={activatePen}>✏️ Pen</button>
         <button onClick={activateEraser}>🧽 Eraser</button>
