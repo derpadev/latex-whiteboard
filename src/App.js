@@ -13,11 +13,13 @@ function App() {
   const [latexImage, setLatexImage] = useState(null);
   const [latexPosition, setLatexPosition] = useState({ x: 0, y: 0 });
   const [placingLatex, setPlacingLatex] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
-
+// Initialize Canvas, set whiteboard size
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = window.innerWidth;
+    canvas.width = 3*window.innerWidth/4;
     canvas.height = window.innerHeight;
   }, []);
 
@@ -88,6 +90,13 @@ function App() {
 
     setPlacingLatex(false);
   };
+
+  const sendMessage = () => {
+    if (newMessage.trim() === "") return;
+    setMessages([...messages, newMessage]);
+    setNewMessage("");
+  };
+  
 
   return (
     <>
@@ -160,7 +169,64 @@ function App() {
           }}
         />
       )}
+
+      {/* Chat Panel */}
+<div style={{
+  position: "fixed",
+  top: 10,
+  right: 10,
+  width: "300px",
+  height: "80vh",
+  backgroundColor: "#f9f9f9",
+  border: "1px solid #ccc",
+  borderRadius: "8px",
+  boxShadow: "0 0 5px rgba(0,0,0,0.2)",
+  padding: "10px",
+  display: "flex",
+  flexDirection: "column",
+  zIndex: 1,
+}}>
+  <div style={{
+    flex: 1,
+    overflowY: "auto",
+    marginBottom: "8px",
+    paddingRight: "4px"
+  }}>
+    {messages.map((msg, idx) => (
+      <div key={idx} style={{
+        backgroundColor: "#fff",
+        padding: "6px 10px",
+        marginBottom: "6px",
+        borderRadius: "6px",
+        boxShadow: "0 0 2px rgba(0,0,0,0.1)"
+      }}>
+        {msg}
+      </div>
+    ))}
+  </div>
+  <div style={{ display: "flex" }}>
+    <input
+      type="text"
+      value={newMessage}
+      onChange={(e) => setNewMessage(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") sendMessage();
+      }}
+      placeholder="Type a message..."
+      style={{
+        flex: 1,
+        padding: "6px",
+        borderRadius: "4px",
+        border: "1px solid #ccc",
+        marginRight: "4px"
+      }}
+    />
+    <button onClick={sendMessage} style={{ padding: "6px 12px" }}>Send</button>
+  </div>
+</div>
+
     </>
+
   );
 }
 
